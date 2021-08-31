@@ -1,2 +1,2 @@
-@media (prefers-color-scheme: dark) {  body { background: #333; color: white; }}
-@media (prefers-color-scheme: light) {  body { background: #ddd; color: black; }}
+@media (prefers-color-scheme: dark) {  body { background: rgba(42, 42, 46, 1); color: white; }}
+@media (prefers-color-scheme: light) {  body { background: rgba(249, 249, 251, 1); color: black; }}
