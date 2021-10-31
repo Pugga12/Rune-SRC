@@ -1,4 +1,6 @@
-<!DOCTYPE html>
+<!--Copyright © 2021 AddyPug & retro_person-->
+<!DOCTYPE html >
+<meta charset="UTF-8">
 <html>
   <head>
     <title>Rune v1.2</title>
@@ -9,14 +11,17 @@
   </head>
   <body id="body">
     <h1>Welcome - Rune 1.2</h1>
-    Welcome to the Rune programming language, the #1 easiest language for beginners! To use Rune, just type in the commands in the first field, and a parameter in the next. Then click "Run", and look for the output in the last text field! Check the variable button if the parameter of that row is a previously defined variable. For a list of commands, see below.<br>List of commands:<br>
+    Welcome to the Rune scripting language, the #1 easiest language for beginners! To use Rune, just type in the commands in the first field, and a parameter in the next. Then click "Run", and look for the output in the last text field! Check the variable button if the parameter of that row is a previously defined variable. For a list of commands, see below.<br>List of commands:<br>
     add1 - Needs number. Used with add2.<br>    
     join1 - Needs number or string. Used with join2.<br>
     join2 - Needs number or string. Used with join1.<br>
     var1 - Needs number. Used for defining a variable.<br>
+    alert - Shows a alert box in your browser with the parameter.<br>
+    print - Prints the parameter into the output field.<br>
     <input type="button" id="run" value="Run" onclick="execComs();"/>
-    <input type="button" id="addFunc" value="Add New Line" onlick="addFunc();"/><br>
-    <textarea id="out" value="" style="resize: none;" readonly></textarea><br>
+    <input type="button" id="addFunc" value="Add New Line" onlick="addFunc();" disabled/><br>
+    <input type="button" id="clear" value="Reset Lines" onclick="clearButton();"/><br>
+    <textarea id="out" value="Console" style="resize: none;" readonly></textarea><br>
     Command&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Parameter
     <br><input type="text" id="c1" value=""/>
     <input type="text" id="p1" value=""/>
@@ -80,6 +85,7 @@
     Variable?<input type="checkbox" id="b20"/><br>
   </body>
   <script>
+    const outputBoxId = "out";
     const lines = 20;
     var add1 = 0;
     var add2 = 0;
@@ -89,6 +95,7 @@
     var join3 = "";
     var var1 = 0;
     var cycle = 0;
+    var deleteCycle = 0;
     var cpb = 20;
     function execCom(idC,idP,idB) {
       if (document.getElementById(idC).value == "var1") {
@@ -104,7 +111,7 @@
       else if (document.getElementById(idC).value == "add2") {
         add2 = parseInt(document.getElementById(idP).value);
         add3 = add1 + add2;
-        document.getElementById("out").value = add3.toString();
+        document.getElementById(outputBoxId).value = add3.toString();
       }
       else if (document.getElementById(idC).value == "join1") {
         join1 = document.getElementById(idP).value;
@@ -114,15 +121,26 @@
         join1 = join1.toString();
         join2 = join2.toString();
         join3 = join1 + join2;
-        document.getElementById("out").value = join3.toString(); 
+        document.getElementById(outputBoxId).value = join3.toString(); 
+      }
+      else if (document.getElementById(idC).value == "alert") {
+        const param = document.getElementById(idP).value.toString();
+        alert(param);
+      } 
+      else if (document.getElementById(idC).value == "print") {
+        const param = document.getElementById(idP).value.toString();
+        document.getElementById(outputBoxId).value = param;
       }
       else {
         if (document.getElementById(idC).value != "") {
-          document.getElementById("out").value = "Error! One of your commands or parameters / variables is incorrect! Please check your code."
+          document.getElementById(outputBoxId).value = "An error has been encountered in your script. Please check your syntax / variables\n\nTask failed successfully"
+          alert("An error has been encountered in your script. Please check your syntax / variables\n\nTask failed successfully");
+          console.error("Error in Script: A syntax error was encountered");
         }
       }
     }
     function execComs() {
+      console.log("Executing Commands");
       while (cycle < lines) {
         cycle++;
         execCom("c" + cycle.toString(),"p" + cycle.toString(),"b" + cycle.toString());
@@ -131,7 +149,27 @@
     }
     function addFunc() {
       cpb++;
-      document.getElementById("body").innerHTML += 'input type="text" id="c' + cpb + '" value=""/><input type="text" id="p' + cpb + '" value=""/>Variable?<input type="checkbox" id="b' + cpb + '"/><br>'
+      document.getElementById("body").innerHTML += '<input type="text" id="c' + cpb + '" value=""/><input type="text" id="p' + cpb + '" value=""/>Variable?<input type="checkbox" id="b' + cpb + '"/><br>'
     }
+    function clearButton() {
+      let isReady = confirm("Are you sure you want to clear the script?\nALL code in this script will be lost");
+      if (isReady == true) {
+        resetLines();
+      }
+      else {
+        console.log("Script not cleared")
+      }
+  }
+  function resetLines() {
+    console.log("Resetting Lines")
+    while (deleteCycle < lines) {
+      deleteCycle++;
+      document.getElementById("c" + deleteCycle.toString()).value = "";
+      document.getElementById("p" + deleteCycle.toString()).value = "";
+      document.getElementById("b" + deleteCycle.toString()).checked = false;
+      console.debug("Line " + deleteCycle.toString() + " reset");
+    }
+    console.log("Lines reset")
+  }
   </script>
 </html>
